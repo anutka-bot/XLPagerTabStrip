@@ -61,6 +61,8 @@ open class PagerTabStripViewController: UIViewController, UIScrollViewDelegate {
     open private(set) var viewControllers = [UIViewController]()
     open private(set) var currentIndex = 0
     open private(set) var preCurrentIndex = 0 // used *only* to store the index to which move when the pager becomes visible
+    open private(set) var previousIndex: Int?
+    private var swipeDidStarted = false
 
     open var pageWidth: CGFloat {
         return containerView.bounds.width
@@ -308,8 +310,19 @@ open class PagerTabStripViewController: UIViewController, UIScrollViewDelegate {
         }
     }
 
+    open func pagerTabStripDidSwipe(_ scrollView: UIScrollView) {}
+
+    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if swipeDidStarted {
+            self.pagerTabStripDidSwipe(scrollView)
+            swipeDidStarted = false
+        }
+    }
+
     open func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         if containerView == scrollView {
+            swipeDidStarted = true
+            previousIndex = currentIndex
             lastPageNumber = pageFor(contentOffset: scrollView.contentOffset.x)
         }
     }

@@ -73,6 +73,12 @@ class YoutubeExampleViewController: BaseButtonBarPagerTabStripViewController<You
         return [child_1, child_2, child_3]
     }
 
+    override func pagerTabStripDidSwipe(_ scrollView: UIScrollView) {
+        if let p = self.previousIndex {
+            print(p)
+        }
+    }
+
     override func configure(cell: YoutubeIconCell, for indicatorInfo: IndicatorInfo) {
         cell.iconImage.image = indicatorInfo.image?.withRenderingMode(.alwaysTemplate)
     }
